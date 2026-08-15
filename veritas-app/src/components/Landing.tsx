@@ -41,18 +41,6 @@ export default function Landing() {
         animate="visible"
         variants={containerVariants}
       >
-        <motion.div 
-          className="hero-badge clay-badge" 
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <motion.div variants={floatingVariants} animate="animate" style={{ display: 'flex', alignItems: 'center' }}>
-            <HugeiconsIcon icon={Layers01Icon} size={16} style={{ marginRight: '6px' }} />
-          </motion.div>
-          <span>GenLayer Hackathon 2026</span>
-        </motion.div>
-        
         <motion.h1 
           variants={itemVariants} 
           className="hero-title"
