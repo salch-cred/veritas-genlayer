@@ -1,32 +1,54 @@
-# React + TypeScript + Vite
+# Veritas
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The Decentralized Court of Truth. 
 
-Currently, two official plugins are available:
+An autonomous, web-aware fact-checking network powered by GenLayer's Equivalence Principle. Stake $GEN to adjudicate claims instantly with decentralized AI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Overview
 
-## React Compiler
+Veritas allows users to submit controversial claims alongside reference URLs. Utilizing GenLayer's decentralized AI validators, the network scrapes the web, runs independent LLM inference, and anchors an objective consensus on an immutable ledger. 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Architecture
 
-## Expanding the Oxlint configuration
+- **Frontend Framework:** React 19 + Vite
+- **Styling & Motion:** Vanilla CSS (Paper Craft x Claymorphism hybrid) + Framer Motion
+- **Authentication:** Privy SDK (Embedded Wallets & Email Auth)
+- **Web3 Integration:** Wagmi + Viem
+- **Smart Contracts:** GenLayer SDK (`genlayer-js`)
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Getting Started
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Prerequisites
+- Node.js (v20+)
+- npm 
+
+### Environment Variables
+Create a `.env` file in the root directory and configure the following:
+```env
+VITE_PRIVY_APP_ID=your_privy_app_id
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+## Build & Deployment
+
+Veritas is optimized for Vercel deployment. The build process utilizes strict TypeScript checking and Vite's production bundler.
+
+```bash
+# Run type checks and build for production
+npm run build
+```
+
+*Note: If deploying to Vercel, ensure `.npmrc` is configured with `legacy-peer-deps=true` to resolve upstream Web3 peer dependency conflicts.*
+
+## License
+
+MIT
