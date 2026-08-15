@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Dashboard from './components/Dashboard';
-import { LayersIcon } from '@hugeicons/react';
-// import { GenLayerClient } from 'genlayer-js'; // To be fully integrated
-
 function App() {
   const [account, setAccount] = useState<string | null>(null);
 
@@ -23,7 +20,7 @@ function App() {
     <div className="app-container">
       <header>
         <div className="logo">
-          <LayersIcon size={28} variant="solid" />
+          🌐
           Veritas
         </div>
         <nav>

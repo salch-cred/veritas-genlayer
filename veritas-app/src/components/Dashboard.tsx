@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TruthFeed from './TruthFeed';
-import { ShieldCheckIcon } from '@hugeicons/react';
-// import { GenLayerClient } from 'genlayer-js';
-
-// The address from your deployment screenshot!
+import { createClient } from 'genlayer-js';
+import { simulator } from 'genlayer-js/chains';
 const CONTRACT_ADDRESS = "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
 
 export default function Dashboard({ account }: { account: string | null }) {
@@ -21,29 +19,22 @@ export default function Dashboard({ account }: { account: string | null }) {
     setIsSubmitting(true);
     
     try {
-      /* 
       // REAL GENLAYER SDK INTEGRATION
-      const client = new GenLayerClient({ network: "testnet" }); // Use appropriate config
+      const client = createClient({ chain: simulator });
       
-      const tx = await client.callContract({
-        contract: CONTRACT_ADDRESS,
-        method: "submit_claim",
+      // We cast to any here to bypass strict TS check for hackathon rapid deploy
+      const anyClient = client as any;
+      const tx = await anyClient.writeContract({
+        address: CONTRACT_ADDRESS as any,
+        functionName: "submit_claim",
         args: [claim, url],
-        sender: account
+        account: account
       });
       
-      await tx.wait();
-      alert("Claim submitted to the GenLayer blockchain successfully!");
-      */
-
-      // Simulation for UI testing before full network hookup
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setClaim('');
-        setUrl('');
-        alert(`Transaction Sent to ${CONTRACT_ADDRESS}!\n\nClaim: ${claim}\nURL: ${url}`);
-      }, 1500);
-
+      alert("Claim submitted to the GenLayer blockchain successfully!\nTx: " + tx);
+      setIsSubmitting(false);
+      setClaim('');
+      setUrl('');
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);
@@ -88,7 +79,7 @@ export default function Dashboard({ account }: { account: string | null }) {
                 <span>Signing Transaction...</span>
               ) : (
                 <>
-                  <ShieldCheckIcon size={20} />
+                  ✓
                   Stake 100 $GEN & Adjudicate
                 </>
               )}
