@@ -22,17 +22,6 @@ export default function Landing() {
     }
   };
 
-  const floatingVariants: any = {
-    animate: {
-      y: [0, -10, 0],
-      transition: {
-        duration: 4,
-        ease: "easeInOut",
-        repeat: Infinity,
-      }
-    }
-  };
-
   return (
     <div className="landing-page">
       <motion.div 
