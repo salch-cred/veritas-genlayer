@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TruthFeed from './TruthFeed';
 import { createClient } from 'genlayer-js';
-import { simulator } from 'genlayer-js/chains';
 const CONTRACT_ADDRESS = "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
 
 export default function Dashboard({ account }: { account: string | null }) {
@@ -19,8 +18,7 @@ export default function Dashboard({ account }: { account: string | null }) {
     setIsSubmitting(true);
     
     try {
-      // REAL GENLAYER SDK INTEGRATION
-      const client = createClient({ chain: simulator });
+      const client = createClient();
       
       // We cast to any here to bypass strict TS check for hackathon rapid deploy
       const anyClient = client as any;
