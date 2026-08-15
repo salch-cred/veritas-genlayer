@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import TruthFeed from './TruthFeed';
 import { createClient } from 'genlayer-js';
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Shield01Icon } from "@hugeicons/core-free-icons";
 const CONTRACT_ADDRESS = "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
 
 export default function Dashboard({ account }: { account: string | null }) {
@@ -77,7 +79,7 @@ export default function Dashboard({ account }: { account: string | null }) {
                 <span>Signing Transaction...</span>
               ) : (
                 <>
-                  ✓
+                  <HugeiconsIcon icon={Shield01Icon} size={20} />
                   Stake 100 $GEN & Adjudicate
                 </>
               )}

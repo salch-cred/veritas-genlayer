@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Dashboard from './components/Dashboard';
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Layers01Icon } from "@hugeicons/core-free-icons";
 function App() {
   const [account, setAccount] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ function App() {
     <div className="app-container">
       <header>
         <div className="logo">
-          🌐
+          <HugeiconsIcon icon={Layers01Icon} size={28} />
           Veritas
         </div>
         <nav>
