@@ -3,6 +3,8 @@ import TruthFeed from './TruthFeed';
 import { createClient } from 'genlayer-js';
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Shield01Icon } from "@hugeicons/core-free-icons";
+import { motion } from 'framer-motion';
+
 const CONTRACT_ADDRESS = "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
 
 export default function Dashboard({ account }: { account: string | null }) {
@@ -12,17 +14,14 @@ export default function Dashboard({ account }: { account: string | null }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!account) {
-      alert("Please connect your wallet first!");
-      return;
-    }
-
+    if (!claim || !url) return alert("Please fill all fields");
+    if (!account) return alert("Please connect MetaMask first!");
+    
     setIsSubmitting(true);
     
     try {
       const client = createClient();
       
-      // We cast to any here to bypass strict TS check for hackathon rapid deploy
       const anyClient = client as any;
       const tx = await anyClient.writeContract({
         address: CONTRACT_ADDRESS as any,
@@ -42,41 +41,59 @@ export default function Dashboard({ account }: { account: string | null }) {
     }
   };
 
+  const pageVariants: any = {
+    initial: { opacity: 0, scale: 0.98 },
+    in: { opacity: 1, scale: 1 },
+    out: { opacity: 0, scale: 0.98 }
+  };
+
   return (
-    <div className="dashboard-grid">
-      <div className="left-panel" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        <div className="card">
-          <h2>Submit Claim for Verification</h2>
-          <p className="subtitle">
-            Stake tokens and submit a claim. The GenLayer Intelligent Contract will browse the web, cross-reference data, and use LLM consensus to verify its truthfulness.
-          </p>
+    <motion.div 
+      className="dashboard-grid"
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={{ duration: 0.4, type: 'spring', bounce: 0.2 }}
+    >
+      <div className="main-panel">
+        <div className="card clay-card" style={{ marginBottom: '2rem' }}>
+          <h2>Submit a Claim</h2>
+          <p className="subtitle">Enter a controversial claim and a reference URL. Our decentralized AI validators will scrape the web and reach consensus.</p>
           
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>Claim Statement</label>
+              <label>The Claim</label>
               <input 
                 type="text" 
-                placeholder="e.g. The company X has filed for bankruptcy." 
+                placeholder="e.g. OpenAI has released GPT-5"
                 value={claim}
-                onChange={(e) => setClaim(e.target.value)}
-                required 
+                onChange={e => setClaim(e.target.value)}
+                disabled={isSubmitting}
+                className="clay-input"
               />
             </div>
             
             <div className="input-group">
-              <label>Reference URL / Evidence</label>
+              <label>Reference URL</label>
               <input 
                 type="url" 
-                placeholder="https://news.example.com/article" 
+                placeholder="https://..."
                 value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                required 
+                onChange={e => setUrl(e.target.value)}
+                disabled={isSubmitting}
+                className="clay-input"
               />
             </div>
-
-            <button type="submit" className="button" style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }} disabled={isSubmitting}>
+            
+            <button 
+              type="submit" 
+              className="button clay-btn" 
+              disabled={isSubmitting || !account}
+              style={{ width: '100%', marginTop: '1rem' }}
+            >
               {isSubmitting ? (
-                <span>Signing Transaction...</span>
+                <span className="spin">⌛</span>
               ) : (
                 <>
                   <HugeiconsIcon icon={Shield01Icon} size={20} />
@@ -84,24 +101,25 @@ export default function Dashboard({ account }: { account: string | null }) {
                 </>
               )}
             </button>
+            {!account && <p style={{ fontSize: '0.85rem', color: 'var(--danger)', marginTop: '0.75rem', textAlign: 'center', fontWeight: 500 }}>Please connect wallet first</p>}
           </form>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <div className="card metric-card" style={{ flex: 1 }}>
-            <h3>Global Consensus</h3>
-            <div className="value">92%</div>
+        <div className="network-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div className="metric-card clay-card">
+            <h3>Active Validators</h3>
+            <div className="value">142</div>
           </div>
-          <div className="card metric-card" style={{ flex: 1 }}>
-            <h3>Total Staked</h3>
-            <div className="value">2.4M</div>
+          <div className="metric-card clay-card">
+            <h3>Total Value Locked</h3>
+            <div className="value">1.2M <span style={{fontSize: '1rem', color: 'var(--text-muted)'}}>$GEN</span></div>
           </div>
         </div>
       </div>
-
-      <div className="right-panel">
+      
+      <div className="side-panel">
         <TruthFeed />
       </div>
-    </div>
+    </motion.div>
   );
 }

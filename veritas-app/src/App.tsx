@@ -1,9 +1,14 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
+import Landing from './components/Landing';
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Layers01Icon } from "@hugeicons/core-free-icons";
-function App() {
+import { AnimatePresence } from 'framer-motion';
+
+function AppContent() {
   const [account, setAccount] = useState<string | null>(null);
+  const location = useLocation();
 
   const connectWallet = async () => {
     if (typeof window !== 'undefined' && (window as any).ethereum) {
@@ -20,27 +25,42 @@ function App() {
 
   return (
     <div className="app-container">
-      <header>
-        <div className="logo">
+      <header className="clay-header">
+        <Link to="/" className="logo">
           <HugeiconsIcon icon={Layers01Icon} size={28} />
           Veritas
-        </div>
+        </Link>
         <nav>
-          {account ? (
-            <div className="button outline" style={{ cursor: 'default' }}>
-              {account.slice(0, 6)}...{account.slice(-4)}
-            </div>
+          {location.pathname === '/' ? (
+            <Link to="/app" className="button outline clay-btn-outline">Go to App</Link>
           ) : (
-            <button className="button outline" onClick={connectWallet}>Connect Wallet</button>
+            account ? (
+              <div className="button outline clay-btn-outline" style={{ cursor: 'default' }}>
+                {account.slice(0, 6)}...{account.slice(-4)}
+              </div>
+            ) : (
+              <button className="button outline clay-btn-outline" onClick={connectWallet}>Connect Wallet</button>
+            )
           )}
         </nav>
       </header>
 
       <main>
-        <Dashboard account={account} />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/app" element={<Dashboard account={account} />} />
+          </Routes>
+        </AnimatePresence>
       </main>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
