@@ -340,3 +340,53 @@ p.subtitle {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* --- Responsive Design (Mobile & Tablet) --- */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    letter-spacing: -1px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+  
+  .app-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .clay-header {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .network-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
