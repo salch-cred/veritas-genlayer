@@ -62,58 +62,62 @@ export default function Landing() {
       </motion.div>
 
       <motion.div 
-        className="features-grid"
+        className="bento-grid"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         <motion.div 
-          className="feature-card clay-card" 
+          className="feature-card clay-card bento-wide" 
           variants={itemVariants}
-          whileHover={{ y: -8, scale: 1.02 }}
+          whileHover={{ y: -4, scale: 1.01 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <motion.div 
-            className="feature-icon"
-            whileHover={{ rotate: 10, scale: 1.1 }}
-          >
+          <motion.div className="feature-icon">
             <HugeiconsIcon icon={Shield01Icon} size={28} />
           </motion.div>
           <h3>Optimistic Democracy</h3>
-          <p>Validators run independent LLM inference to establish objective truth.</p>
+          <p>Validators run independent LLM inference to establish objective truth on subjective claims using internet consensus.</p>
         </motion.div>
         
         <motion.div 
-          className="feature-card clay-card" 
+          className="feature-card clay-card bento-tall" 
           variants={itemVariants}
-          whileHover={{ y: -8, scale: 1.02 }}
+          whileHover={{ y: -4, scale: 1.01 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <motion.div 
-            className="feature-icon"
-            whileHover={{ rotate: -10, scale: 1.1 }}
-          >
+          <motion.div className="feature-icon">
             <HugeiconsIcon icon={Layers01Icon} size={28} />
           </motion.div>
           <h3>Web-Aware Contracts</h3>
-          <p>Smart contracts that can natively read the live internet to verify claims.</p>
+          <p>GenLayer smart contracts that natively scrape the live internet to verify incoming data without relying on traditional legacy oracles.</p>
         </motion.div>
-        
+
         <motion.div 
           className="feature-card clay-card" 
           variants={itemVariants}
-          whileHover={{ y: -8, scale: 1.02 }}
+          whileHover={{ y: -4, scale: 1.01 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <motion.div 
-            className="feature-icon"
-            whileHover={{ rotate: 15, scale: 1.1 }}
-          >
+          <motion.div className="feature-icon">
             <HugeiconsIcon icon={Tick01Icon} size={28} />
           </motion.div>
+          <h3>Equivalence Principle</h3>
+          <p>Consensus based on semantic meaning rather than exact bytes.</p>
+        </motion.div>
+
+        <motion.div 
+          className="feature-card clay-card" 
+          variants={itemVariants}
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        >
+          <motion.div className="feature-icon">
+            <HugeiconsIcon icon={Shield01Icon} size={28} />
+          </motion.div>
           <h3>Immutable Ledger</h3>
-          <p>Once a consensus is reached, the truth is permanently anchored on GenLayer.</p>
+          <p>Once a consensus is reached, the truth is permanently anchored.</p>
         </motion.div>
       </motion.div>
     </div>

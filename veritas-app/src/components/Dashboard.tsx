@@ -10,14 +10,24 @@ const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0x628626228Ac
 export default function Dashboard({ account }: { account: string | null }) {
   const [claim, setClaim] = useState('');
   const [url, setUrl] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [txHash, setTxHash] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!claim || !url) return alert("Please fill all fields");
-    if (!account) return alert("Please connect MetaMask first!");
+    if (!claim || !url) {
+      setStatus('error');
+      setErrorMessage("Please fill out both the claim and the reference URL.");
+      return;
+    }
+    if (!account) {
+      setStatus('error');
+      setErrorMessage("Please connect your wallet first.");
+      return;
+    }
     
-    setIsSubmitting(true);
+    setStatus('loading');
     
     try {
       const client = createClient();
@@ -30,14 +40,14 @@ export default function Dashboard({ account }: { account: string | null }) {
         account: account
       });
       
-      alert("Claim submitted to the GenLayer blockchain successfully!\nTx: " + tx);
-      setIsSubmitting(false);
+      setTxHash(tx);
+      setStatus('success');
       setClaim('');
       setUrl('');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setIsSubmitting(false);
-      alert("Transaction failed. Check console.");
+      setStatus('error');
+      setErrorMessage(err.message || "Transaction failed. Please try again.");
     }
   };
 
@@ -69,7 +79,7 @@ export default function Dashboard({ account }: { account: string | null }) {
                 placeholder="e.g. OpenAI has released GPT-5"
                 value={claim}
                 onChange={e => setClaim(e.target.value)}
-                disabled={isSubmitting}
+                disabled={status === 'loading'}
                 className="clay-input"
               />
             </div>
@@ -81,7 +91,7 @@ export default function Dashboard({ account }: { account: string | null }) {
                 placeholder="https://..."
                 value={url}
                 onChange={e => setUrl(e.target.value)}
-                disabled={isSubmitting}
+                disabled={status === 'loading'}
                 className="clay-input"
               />
             </div>
@@ -89,11 +99,13 @@ export default function Dashboard({ account }: { account: string | null }) {
             <button 
               type="submit" 
               className="button clay-btn" 
-              disabled={isSubmitting || !account}
+              disabled={status === 'loading' || !account}
               style={{ width: '100%', marginTop: '1rem' }}
             >
-              {isSubmitting ? (
-                <span className="spin">⌛</span>
+              {status === 'loading' ? (
+                <>
+                  <span className="spin">⌛</span> Validating...
+                </>
               ) : (
                 <>
                   <HugeiconsIcon icon={Shield01Icon} size={20} />
@@ -102,6 +114,18 @@ export default function Dashboard({ account }: { account: string | null }) {
               )}
             </button>
             {!account && <p style={{ fontSize: '0.85rem', color: 'var(--danger)', marginTop: '0.75rem', textAlign: 'center', fontWeight: 500 }}>Please connect wallet first</p>}
+            
+            {status === 'error' && (
+              <div className="feedback-box feedback-error">
+                {errorMessage}
+              </div>
+            )}
+            {status === 'success' && (
+              <div className="feedback-box feedback-success">
+                Claim submitted to the GenLayer blockchain successfully! <br/>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>Tx: {txHash}</span>
+              </div>
+            )}
           </form>
         </div>
 
