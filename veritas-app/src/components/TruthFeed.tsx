@@ -3,7 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Tick01Icon, Cancel01Icon, Loading01Icon } from "@hugeicons/core-free-icons";
 import { createClient } from 'genlayer-js';
 
-const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
+const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0xE5dB876d127C49fD5b3bC2122A8506094D996ACf";
 
 export default function TruthFeed() {
   const [policies, setPolicies] = useState<any[]>([]);

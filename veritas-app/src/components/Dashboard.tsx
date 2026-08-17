@@ -4,7 +4,7 @@ import { Shield01Icon, Tick01Icon } from "@hugeicons/core-free-icons";
 import TruthFeed from './TruthFeed';
 import { createClient } from 'genlayer-js';
 
-const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
+const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0xE5dB876d127C49fD5b3bC2122A8506094D996ACf";
 
 export default function Dashboard({ account }: { account: string | null }) {
   const [flightNumber, setFlightNumber] = useState('');
