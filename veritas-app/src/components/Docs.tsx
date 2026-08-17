@@ -25,8 +25,8 @@ export default function Docs() {
         <nav className="docs-nav">
           <a href="#introduction">Introduction</a>
           <a href="#how-it-works">How It Works</a>
-          <a href="#staking">Staking $GEN</a>
-          <a href="#consensus">Consensus Mechanism</a>
+          <a href="#purchasing">Purchasing Policies</a>
+          <a href="#consensus">AI Flight Verification</a>
         </nav>
       </motion.aside>
 
@@ -39,44 +39,43 @@ export default function Docs() {
         <motion.section id="introduction" variants={itemVariants}>
           <h2>Introduction to Veritas</h2>
           <p>
-            Veritas is a decentralized oracle and fact-checking network built on GenLayer. 
-            Traditional blockchains cannot natively access the internet. GenLayer introduces 
-            <strong>Intelligent Contracts</strong> that use LLM validators to achieve consensus 
-            on subjective or external data.
+            Veritas is a decentralized flight delay insurance network built on GenLayer. 
+            Traditional blockchains cannot natively access the internet to check flight statuses. 
+            GenLayer introduces <strong>Intelligent Contracts</strong> that use LLM validators to achieve consensus 
+            on external data, such as flight tracking websites.
           </p>
         </motion.section>
 
         <motion.section id="how-it-works" variants={itemVariants}>
           <h2>How It Works</h2>
           <p>
-            When a user submits a claim along with a reference URL, the Veritas smart contract 
+            When a user purchases a policy and subsequently files a claim, the Veritas smart contract 
             executes an async request to GenLayer's decentralized validator network.
           </p>
           <ol>
-            <li>The contract scrapes the content of the provided URL.</li>
-            <li>It formats a prompt asking if the claim is supported by the URL content.</li>
+            <li>The contract scrapes the content of flight tracking websites (e.g., FlightAware).</li>
+            <li>It formats a prompt asking if the specific flight was delayed or cancelled.</li>
             <li>Multiple validators run LLM inference on this prompt.</li>
-            <li>The Equivalence Principle is applied to reach a consensus.</li>
+            <li>The Equivalence Principle is applied to reach a consensus and approve the claim.</li>
           </ol>
         </motion.section>
 
-        <motion.section id="staking" variants={itemVariants}>
-          <h2>Staking $GEN</h2>
+        <motion.section id="purchasing" variants={itemVariants}>
+          <h2>Purchasing Policies</h2>
           <p>
-            To prevent spam and incentivize honest claims, users must stake <strong>100 $GEN</strong> 
-            when submitting a claim. If the network validates the claim as truthful, the stake is 
-            returned along with a fractional reward. If the claim is demonstrably false, a portion 
-            of the stake is slashed.
+            Users can purchase a policy by entering their flight number and departure date. This creates an 
+            on-chain record. If the flight experiences a delay of more than 2 hours or is cancelled, the user 
+            can file a claim to receive an instant automated payout.
           </p>
         </motion.section>
 
         <motion.section id="consensus" variants={itemVariants}>
-          <h2>Consensus Mechanism</h2>
+          <h2>AI Flight Verification</h2>
           <p>
             Unlike traditional Byzantine Fault Tolerance (BFT) which requires exact byte-for-byte 
-            matches, GenLayer uses the <strong>Equivalence Principle</strong>. If 13 out of 15 
-            validators return semantically equivalent answers (e.g. "Yes, the article states X" vs "True, X is supported"), 
-            consensus is achieved.
+            matches from legacy oracles, GenLayer uses the <strong>Equivalence Principle</strong>. If the majority 
+            of validators return semantically equivalent answers (e.g. "APPROVED" because the flight was delayed), 
+            consensus is achieved and the payout is triggered autonomously.
           </p>
         </motion.section>
       </motion.div>

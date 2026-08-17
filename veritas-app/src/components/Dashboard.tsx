@@ -1,97 +1,120 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Shield01Icon, Tick01Icon } from "@hugeicons/core-free-icons";
 import TruthFeed from './TruthFeed';
 import { createClient } from 'genlayer-js';
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Shield01Icon } from "@hugeicons/core-free-icons";
-import { motion } from 'framer-motion';
 
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || "0x628626228Ac3503A1dfA57916CB636b6Fc0B5154";
 
 export default function Dashboard({ account }: { account: string | null }) {
-  const [claim, setClaim] = useState('');
-  const [url, setUrl] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [flightNumber, setFlightNumber] = useState('');
+  const [flightDate, setFlightDate] = useState('');
+  const [policyId, setPolicyId] = useState('');
+  
+  const [purchaseStatus, setPurchaseStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [claimStatus, setClaimStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  
   const [txHash, setTxHash] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handlePurchase = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!claim || !url) {
-      setStatus('error');
-      setErrorMessage("Please fill out both the claim and the reference URL.");
+    if (!flightNumber || !flightDate) {
+      setPurchaseStatus('error');
+      setErrorMessage("Please fill out both flight number and date.");
       return;
     }
     if (!account) {
-      setStatus('error');
+      setPurchaseStatus('error');
       setErrorMessage("Please connect your wallet first.");
       return;
     }
     
-    setStatus('loading');
+    setPurchaseStatus('loading');
     
     try {
       const client = createClient();
-      
       const anyClient = client as any;
       const tx = await anyClient.writeContract({
         address: CONTRACT_ADDRESS as any,
-        functionName: "submit_claim",
-        args: [claim, url],
+        functionName: "purchase_policy",
+        args: [flightNumber, flightDate],
         account: account
       });
       
       setTxHash(tx);
-      setStatus('success');
-      setClaim('');
-      setUrl('');
+      setPurchaseStatus('success');
+      setFlightNumber('');
+      setFlightDate('');
     } catch (err: any) {
       console.error(err);
-      setStatus('error');
+      setPurchaseStatus('error');
       setErrorMessage(err.message || "Transaction failed. Please try again.");
     }
   };
 
-  const pageVariants: any = {
-    initial: { opacity: 0, scale: 0.98 },
-    in: { opacity: 1, scale: 1 },
-    out: { opacity: 0, scale: 0.98 }
+  const handleClaim = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!policyId) {
+      setClaimStatus('error');
+      setErrorMessage("Please enter a Policy ID to file a claim.");
+      return;
+    }
+    if (!account) {
+      setClaimStatus('error');
+      setErrorMessage("Please connect your wallet first.");
+      return;
+    }
+    
+    setClaimStatus('loading');
+    
+    try {
+      const client = createClient();
+      const anyClient = client as any;
+      const tx = await anyClient.writeContract({
+        address: CONTRACT_ADDRESS as any,
+        functionName: "file_claim",
+        args: [parseInt(policyId)],
+        account: account
+      });
+      
+      setTxHash(tx);
+      setClaimStatus('success');
+      setPolicyId('');
+    } catch (err: any) {
+      console.error(err);
+      setClaimStatus('error');
+      setErrorMessage(err.message || "Transaction failed. Please try again.");
+    }
   };
 
   return (
-    <motion.div 
-      className="dashboard-grid"
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      transition={{ duration: 0.4, type: 'spring', bounce: 0.2 }}
-    >
-      <div className="main-panel">
-        <div className="card clay-card" style={{ marginBottom: '2rem' }}>
-          <h2>Submit a Claim</h2>
-          <p className="subtitle">Enter a controversial claim and a reference URL. Our decentralized AI validators will scrape the web and reach consensus.</p>
-          
-          <form onSubmit={handleSubmit}>
+    <div className="dashboard-grid">
+      <div className="dashboard-main">
+        <h2>Insurance Portal</h2>
+        <p className="subtitle">Secure your flight with GenLayer's decentralized insurance protocol.</p>
+        
+        <div className="clay-card">
+          <form onSubmit={handlePurchase}>
             <div className="input-group">
-              <label>The Claim</label>
+              <label>Flight Number</label>
               <input 
                 type="text" 
-                placeholder="e.g. OpenAI has released GPT-5"
-                value={claim}
-                onChange={e => setClaim(e.target.value)}
-                disabled={status === 'loading'}
+                placeholder="e.g. DL123"
+                value={flightNumber}
+                onChange={e => setFlightNumber(e.target.value)}
+                disabled={purchaseStatus === 'loading'}
                 className="clay-input"
               />
             </div>
             
             <div className="input-group">
-              <label>Reference URL</label>
+              <label>Flight Date</label>
               <input 
-                type="url" 
-                placeholder="https://..."
-                value={url}
-                onChange={e => setUrl(e.target.value)}
-                disabled={status === 'loading'}
+                type="date" 
+                value={flightDate}
+                onChange={e => setFlightDate(e.target.value)}
+                disabled={purchaseStatus === 'loading'}
                 className="clay-input"
               />
             </div>
@@ -99,51 +122,82 @@ export default function Dashboard({ account }: { account: string | null }) {
             <button 
               type="submit" 
               className="button clay-btn" 
-              disabled={status === 'loading' || !account}
+              disabled={purchaseStatus === 'loading' || !account}
               style={{ width: '100%', marginTop: '1rem' }}
             >
-              {status === 'loading' ? (
+              {purchaseStatus === 'loading' ? (
                 <>
-                  <span className="spin">⌛</span> Validating...
+                  <span className="spin">⌛</span> Purchasing Policy...
                 </>
               ) : (
                 <>
                   <HugeiconsIcon icon={Shield01Icon} size={20} />
-                  Stake 100 $GEN & Adjudicate
+                  Purchase Flight Insurance
                 </>
               )}
             </button>
-            {!account && <p style={{ fontSize: '0.85rem', color: 'var(--danger)', marginTop: '0.75rem', textAlign: 'center', fontWeight: 500 }}>Please connect wallet first</p>}
             
-            {status === 'error' && (
-              <div className="feedback-box feedback-error">
-                {errorMessage}
-              </div>
+            {purchaseStatus === 'error' && (
+              <div className="feedback-box feedback-error">{errorMessage}</div>
             )}
-            {status === 'success' && (
+            {purchaseStatus === 'success' && (
               <div className="feedback-box feedback-success">
-                Claim submitted to the GenLayer blockchain successfully! <br/>
+                Policy purchased successfully! <br/>
                 <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>Tx: {txHash}</span>
               </div>
             )}
           </form>
         </div>
 
-        <div className="network-stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-          <div className="metric-card clay-card">
-            <h3>Active Validators</h3>
-            <div className="value">142</div>
-          </div>
-          <div className="metric-card clay-card">
-            <h3>Total Value Locked</h3>
-            <div className="value">1.2M <span style={{fontSize: '1rem', color: 'var(--text-muted)'}}>$GEN</span></div>
-          </div>
+        <div className="clay-card" style={{ marginTop: '2rem' }}>
+          <h3>File a Claim</h3>
+          <p className="subtitle" style={{ marginBottom: '1rem' }}>Was your flight delayed or cancelled? File a claim to have the network verify the flight data.</p>
+          <form onSubmit={handleClaim}>
+            <div className="input-group">
+              <label>Policy ID</label>
+              <input 
+                type="number" 
+                placeholder="Enter your Policy ID"
+                value={policyId}
+                onChange={e => setPolicyId(e.target.value)}
+                disabled={claimStatus === 'loading'}
+                className="clay-input"
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="button outline clay-btn-outline" 
+              disabled={claimStatus === 'loading' || !account}
+              style={{ width: '100%', marginTop: '0.5rem' }}
+            >
+              {claimStatus === 'loading' ? (
+                <>
+                  <span className="spin">⌛</span> Verifying Evidence...
+                </>
+              ) : (
+                <>
+                  <HugeiconsIcon icon={Tick01Icon} size={20} />
+                  File Claim (AI Verification)
+                </>
+              )}
+            </button>
+
+            {claimStatus === 'error' && (
+              <div className="feedback-box feedback-error">{errorMessage}</div>
+            )}
+            {claimStatus === 'success' && (
+              <div className="feedback-box feedback-success">
+                Claim processed successfully by GenLayer! <br/>
+                <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>Tx: {txHash}</span>
+              </div>
+            )}
+          </form>
         </div>
       </div>
       
-      <div className="side-panel">
+      <div className="dashboard-sidebar">
         <TruthFeed />
       </div>
-    </motion.div>
+    </div>
   );
 }

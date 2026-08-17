@@ -37,14 +37,14 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
         >
-          The Decentralized <br/> Court of Truth
+          Decentralized <br/> Flight Insurance
         </motion.h1>
         
         <motion.p 
           variants={itemVariants} 
           className="hero-subtitle"
         >
-          An autonomous, web-aware fact-checking network powered by GenLayer's Equivalence Principle. Stake $GEN to adjudicate claims instantly with decentralized AI.
+          An autonomous flight delay insurance protocol powered by GenLayer's Equivalence Principle. Purchase policies and claim instant payouts verified directly from the web.
         </motion.p>
         
         <motion.div variants={itemVariants} className="hero-actions">
@@ -77,8 +77,8 @@ export default function Landing() {
           <motion.div className="feature-icon">
             <HugeiconsIcon icon={Shield01Icon} size={28} />
           </motion.div>
-          <h3>Optimistic Democracy</h3>
-          <p>Validators run independent LLM inference to establish objective truth on subjective claims using internet consensus.</p>
+          <h3>Automated Claims</h3>
+          <p>Validators run independent LLM inference on flight tracking websites to establish objective truth on your flight status without manual reviews.</p>
         </motion.div>
         
         <motion.div 
@@ -91,7 +91,7 @@ export default function Landing() {
             <HugeiconsIcon icon={Layers01Icon} size={28} />
           </motion.div>
           <h3>Web-Aware Contracts</h3>
-          <p>GenLayer smart contracts that natively scrape the live internet to verify incoming data without relying on traditional legacy oracles.</p>
+          <p>GenLayer smart contracts that natively scrape the live internet for flight-source evidence without relying on legacy oracles.</p>
         </motion.div>
 
         <motion.div 
@@ -116,8 +116,8 @@ export default function Landing() {
           <motion.div className="feature-icon">
             <HugeiconsIcon icon={Shield01Icon} size={28} />
           </motion.div>
-          <h3>Immutable Ledger</h3>
-          <p>Once a consensus is reached, the truth is permanently anchored.</p>
+          <h3>Instant Payouts</h3>
+          <p>If your flight is delayed &gt;2 hours or cancelled, the payout is processed automatically.</p>
         </motion.div>
       </motion.div>
     </div>
