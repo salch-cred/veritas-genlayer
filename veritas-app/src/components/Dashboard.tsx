@@ -38,7 +38,7 @@ export default function Dashboard({ account }: { account: string | null }) {
       const tx = await anyClient.writeContract({
         address: CONTRACT_ADDRESS as any,
         functionName: "purchase_policy",
-        args: [flightNumber, flightDate],
+        args: [flightNumber, flightDate, 100], // 100 GEN default premium
         account: account
       });
       
@@ -73,7 +73,7 @@ export default function Dashboard({ account }: { account: string | null }) {
       const anyClient = client as any;
       const tx = await anyClient.writeContract({
         address: CONTRACT_ADDRESS as any,
-        functionName: "file_claim",
+        functionName: "claim_payout",
         args: [parseInt(policyId)],
         account: account
       });

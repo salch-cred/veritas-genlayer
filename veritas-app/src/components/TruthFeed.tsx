@@ -51,16 +51,17 @@ export default function TruthFeed() {
         {!loading && policies.length === 0 && <p>No policies found.</p>}
         
         {policies.map(item => (
-          <div key={item.id} className={`feed-item status-${item.claim_result ? (item.claim_result === 'APPROVED' ? 'true' : 'false') : 'pending'}`}>
+          <div key={item.id} className={`feed-item status-${item.decision ? (item.decision.includes('APPROVED') ? 'true' : 'false') : 'pending'}`}>
             <div className="feed-header">
               <span className="time">Policy #{item.id}</span>
               <div className="consensus-badge" style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                 {item.status === 'ACTIVE' && <><HugeiconsIcon icon={Loading01Icon} size={14} /> ACTIVE</>}
-                {item.status === 'PROCESSED' && item.claim_result === 'APPROVED' && <><HugeiconsIcon icon={Tick01Icon} size={14} /> APPROVED</>}
-                {item.status === 'PROCESSED' && item.claim_result === 'REJECTED' && <><HugeiconsIcon icon={Cancel01Icon} size={14} /> REJECTED</>}
+                {item.status === 'CLAIMED' && <><HugeiconsIcon icon={Tick01Icon} size={14} /> CLAIMED</>}
+                {item.status === 'REJECTED' && <><HugeiconsIcon icon={Cancel01Icon} size={14} /> REJECTED</>}
               </div>
             </div>
             <p className="claim-text">Flight: {item.flight_number} <br/><span style={{fontSize:'0.85rem', color: 'var(--text-muted)'}}>Date: {item.flight_date}</span></p>
+            {item.decision && <p style={{fontSize:'0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem'}}>{item.decision}</p>}
           </div>
         ))}
       </div>
